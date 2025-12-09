@@ -31,7 +31,9 @@ cap = cv2.VideoCapture(0)
 min_mouth_distance = 0.01
 basic_eye_distance = 100
 min_eye_distance = 0.3
-max_eye_distance = 0.33
+max_eye_distance = 0.35
+n = 0
+prev = None
 
 while(cap.isOpened()):
     ret, frame = cap.read()
@@ -43,6 +45,51 @@ while(cap.isOpened()):
     results = face_mesh.process(flippedRGB)
 
     if results.multi_face_landmarks is not None:
+        face_landmarks = results.multi_face_landmarks[0].landmark
+        left_eye_x, left_eye_y = face_landmarks[33].x * w, face_landmarks[33].y * h
+        right_eye_x, right_eye_y = face_landmarks[263].x * w, face_landmarks[263].y * h
+        eye_distance = np.sqrt((right_eye_x - left_eye_x) ** 2 + (right_eye_y - left_eye_y) ** 2)
+
+        mouth_top = face_landmarks[13].y
+        mouth_bottom = face_landmarks[14].y
+        mouth_distance = abs(mouth_top - mouth_bottom)
+
+        left_top_x, left_top_y = face_landmarks[386].x * w, face_landmarks[386].y * h
+        left_bottom_x, left_bottom_y = face_landmarks[374].x * w, face_landmarks[374].y * h
+        left_eye_h_distance = np.sqrt((left_bottom_x - left_top_x) ** 2 + (left_bottom_y - left_top_y) ** 2)
+
+        left_l_x, left_l_y = face_landmarks[359].x * w, face_landmarks[359].y * h
+        left_r_x, left_r_y = face_landmarks[362].x * w, face_landmarks[362].y * h
+        left_eye_w_distance = np.sqrt((left_l_x - left_r_x) ** 2 + (left_r_y - left_l_y) ** 2)
+
+        left_eye_distance = left_eye_h_distance / left_eye_w_distance
+
+        right_top_x, right_top_y = face_landmarks[159].x * w, face_landmarks[159].y * h
+        right_bottom_x, right_bottom_y = face_landmarks[145].x * w, face_landmarks[145].y * h
+        right_eye_h_distance = np.sqrt((right_bottom_x - right_top_x) ** 2 + (right_bottom_y - right_top_y) ** 2)
+
+        right_l_x, right_l_y = face_landmarks[133].x * w, face_landmarks[133].y * h
+        right_r_x, right_r_y = face_landmarks[130].x * w, face_landmarks[130].y * h
+        right_eye_w_distance = np.sqrt((right_l_x - right_r_x) ** 2 + (right_l_y - right_r_y) ** 2)
+
+        right_eye_distance = right_eye_h_distance / right_eye_w_distance
+
+        if mouth_distance > min_mouth_distance:    # mouth is open
+            now = "dog"
+        elif left_eye_distance < min_eye_distance and right_eye_distance < min_eye_distance:    # eyes are narrowed
+            now = "detective"
+        elif left_eye_distance > max_eye_distance and right_eye_distance > max_eye_distance:    # eyes open wide
+            now = "laser"
+        else:
+            now = "christmas"
+
+    if now == prev:
+        n += 1
+    else:
+        n = 0
+        prev = now
+
+    if n >= 5 and results.multi_face_landmarks is not None:
         face_landmarks = results.multi_face_landmarks[0].landmark
         left_eye_x, left_eye_y = face_landmarks[33].x * w, face_landmarks[33].y * h
         right_eye_x, right_eye_y = face_landmarks[263].x * w, face_landmarks[263].y * h
