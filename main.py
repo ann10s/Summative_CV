@@ -13,6 +13,11 @@ def click_event(event, x_mouse, y_mouse, flags, params):
         if state == "menu":
             if clicked(x_mouse, y_mouse, 200, 300, 240, 70):
                 state = "running"
+            elif clicked(x_mouse, y_mouse, 560, 20, 60, 60):
+                state = "tutorial"
+        elif state == "tutorial":
+            if clicked(x_mouse, y_mouse, 10, 10, 150, 40):
+                state = "menu"
         else:
             if clicked(x_mouse, y_mouse, 10, 10, 150, 40):
                 state = "menu"
@@ -79,6 +84,8 @@ while(cap.isOpened()):
         hsv[:, :, 2] = hsv[:, :, 2] // 4    # darkened background
         dark = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
         cv2.putText(dark, "AnnChat", (190, 100), font, 2, (255, 255, 255), 3)
+        drawing_button(dark, 560, 20, 60, 60)
+        cv2.putText(dark, "i", (583, 69), font, 1.7, (255, 255, 255), 4)
         drawing_button(dark, 200, 300, 240, 70)
         cv2.putText(dark, "Start", (280, 345), font, 1, (255, 255, 255), 2)
         cv2.putText(dark, "Change your facial expression", (150, 160), font, 0.7, (255, 255, 255, 2))    # description
@@ -87,6 +94,22 @@ while(cap.isOpened()):
         cv2.putText(dark, "by pressing the 'S' key. Good luck!", (150, 250), font, 0.7, (255, 255, 255, 2))
         cv2.imshow("AnnChat", dark)
         cv2.setMouseCallback("AnnChat", click_event)
+
+    elif state == "tutorial":    # tutorial
+        hsv = cv2.cvtColor(flipped, cv2.COLOR_BGR2HSV)
+        hsv[:, :, 2] = hsv[:, :, 2] // 4    # darkened background
+        dark = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
+        cv2.putText(dark, "How to play", (180, 110), font, 1.5, (255, 255, 255), 3)
+        cv2.putText(dark, "* Opened mouth - dog mask", (130, 170), font, 0.8, (255, 255, 255), 1)
+        cv2.putText(dark, "* Squinted eyes - detective hat", (120, 210), font, 0.8, (255, 255, 255), 1)
+        cv2.putText(dark, "* Bulging eyes - lasers from eyes", (110, 250), font, 0.8, (255, 255, 255), 1)
+        cv2.putText(dark, "* Normal expression - christmas hat", (100, 290), font, 0.8, (255, 255, 255), 1)
+        cv2.putText(dark, "Keep your head straight!", (170, 330), font, 0.8, (55, 22, 255), 2)
+        cv2.putText(dark, "Press 'S' to take a screenshot", (130, 370), font, 0.8, (224, 171, 79), 2)
+        drawing_button(dark, 10, 10, 150, 40)    # back to main menu
+        cv2.putText(dark, "Main menu", (16, 40), font, 0.8, (255, 255, 255), 2)
+        cv2.imshow("AnnChat", dark)
+
     else:    # running
         if results.multi_face_landmarks is not None:
             face_landmarks = results.multi_face_landmarks[0].landmark
