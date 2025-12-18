@@ -19,6 +19,6 @@
 14 декабря — добавлена функция скриншота при нажатии клавиши "S"  
 15 декабря — добавлен туториал, отмеченный в правом верхнем углу буквой "i"  
 
-![Илон Маск](https://avatars.dzeninfra.ru/get-zen_brief/271828/pub_694417102b8b7409c536d6ab_694417a44f8ad624804d6ee8/scale_2400)
-![Марк Цукерберг](https://avatars.dzeninfra.ru/get-zen_brief/271828/pub_694417102b8b7409c536d6ab_694417a46b0bcb72072e1a4a/scale_2400)
-![Прищуренные глаза](https://avatars.dzeninfra.ru/get-zen_brief/271828/pub_694417102b8b7409c536d6ab_694417a4d92cc2488911668a/scale_2400)
+![Илон Маск](https://avatars.dzeninfra.ru/get-zen_brief/271828/pub_694417102b8b7409c536d6ab_694417a44f8ad624804d6ee8/scale_2400)  
+![Марк Цукерберг](https://avatars.dzeninfra.ru/get-zen_brief/271828/pub_694417102b8b7409c536d6ab_694417a46b0bcb72072e1a4a/scale_2400)  
+![Прищуренные глаза](https://avatars.dzeninfra.ru/get-zen_brief/271828/pub_694417102b8b7409c536d6ab_694417a4d92cc2488911668a/scale_2400)  
